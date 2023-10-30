@@ -33,7 +33,6 @@ namespace Utils
         }
         public static string Write(String text, bool newLine = false)
         {
-            /// TODO: There is a line limit, but it is not enforced in this function. It should be. 
             if (newLine)
             {
                 Console.WriteLine(text);
