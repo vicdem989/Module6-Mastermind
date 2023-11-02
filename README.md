@@ -38,12 +38,14 @@ Mastermind is an engaging step up in complexity from your previous projects. It'
 You must use the code from [https://github.com/CodeCraftCurriculum-I/module_6_mastermind](https://github.com/CodeCraftCurriculum-I/module_6_mastermind)
 
 - Create a different animation for the splash screen, this includes creating a new "graphics" etc.
-- Fix it so that the menu is always below the "logo".
-- The rules of mastermind state that the players should:
-  - (A) Agree on the number of attempts (but max 10)
-  - (B) Agree if it is allowed with duplicates.
-- Add the code for the game to have these options (A and B). (Duplicates are the use of the same colour more than once.)
-- Currently, the player can input a sequence shorter or longer than needed. Only permit inputs that are the correct length.
+# DONE - Fix it so that the menu is always below the "logo".  
+# DONE - The rules of mastermind state that the players should:
+ ## - (A) Agree on the number of attempts (but max 10)
+ ## - (B) Agree if it is allowed with duplicates.
+- Add the code for the game to have these options (A and B). (Duplicates are the use of the same colour more than once.)    
+  ## - (A) Added code for
+  (B) - Duplicates are added but not color output
+# DONE - Currently, the player can input a sequence shorter or longer than needed. Only permit inputs that are the correct length.
 - The current output is not pretty and uses numbers instead of colours. Change the code, so the board looks like the following image (as close as possible). The evaluation is on the left, and the guesses are on the right. Note that we are showing the whole board, including the attempts that have not been used yet (all white colours). The code already contains code that shows how to use colours.
     ![description of what the game should look like.](./brett_1.png)
 - Add a Legend after the game board. A legend explains characters, symbols, or markings that may be unfamiliar to the reader.
@@ -52,8 +54,9 @@ You must use the code from [https://github.com/CodeCraftCurriculum-I/module_6_ma
 
 ### Challenge Requirements (Higher Grades)
 
-- Let the player decide the number of elements in the hidden sequence (Currently it is 4)
-- Let the player decide the number of colors that can be used for the sequence.
+## - Let the player decide the number of elements in the hidden sequence (Currently it is 4)
+## -  Let the player decide the number of colors that can be used for the sequence.
+- Implement for decided amount of colors in the sequecne
 - ... Come up with something interesting.
 
 In your `readme.md` file write some reflections about your code.

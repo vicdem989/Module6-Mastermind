@@ -21,7 +21,7 @@ namespace MasterMind
         public Action<Type, Object[]> OnExitScreen { get; set; }
         public void init()
         {
-            startRow = 14; ///TODO: fix, should not be static. 
+            startRow = Console.WindowHeight / 2; ///TODO: fix, should not be static. 
             startColumn = 0;
         }
         public void input()

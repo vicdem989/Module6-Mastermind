@@ -5,7 +5,7 @@ namespace MasterMind
 
     public class SplashScreen : GameEngine.IScene
     {
-        const int TICKS_PER_FRAME = 3;
+        const int TICKS_PER_FRAME = 1;
         const string art = """
 ███    ███  █████  ███████ ████████ ███████ ██████  ███    ███ ██ ███    ██ ██████ 
 ████  ████ ██   ██ ██         ██    ██      ██   ██ ████  ████ ██ ████   ██ ██   ██
