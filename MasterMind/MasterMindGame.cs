@@ -82,14 +82,8 @@ namespace MasterMind
             if (guess == null)
             {
                 Console.WriteLine(Output.Align("Guess a sequence ", Alignment.CENTER));
-                string response = Console.ReadLine();
-                while (!ValidateInput(response))
-                {
-                    Console.WriteLine(Output.Align("Input a new input", Alignment.CENTER));
-                    response = Console.ReadLine();
-                    ValidateInput(response);
-                }
-                string[] temp = response.Split(" "); // Create a array of strings.
+                string respons = Console.ReadLine();
+                string[] temp = respons.Split(" "); // Create a array of strings.
                 int[] intTemp = Array.ConvertAll(temp, s => int.Parse(s)); // Convert to an array of int
                 return intTemp;
             }
@@ -120,21 +114,6 @@ namespace MasterMind
 
 
             return output;
-        }
-
-        bool ValidateInput(string input)
-        {
-            string[] temp = input.Split(' ');
-            if (temp.Length < solution.Length || temp.Length > solution.Length)
-                return false;
-
-            foreach (string element in temp)
-            {
-                if (!int.TryParse(element, out int result))
-                    return false;
-            }
-
-            return true;
         }
 
         bool isPartOfSolution(int[] solution, int guess)
