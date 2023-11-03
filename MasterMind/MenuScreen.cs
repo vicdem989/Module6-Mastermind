@@ -11,11 +11,11 @@ namespace MasterMind
         const string DISPLAY_SETTINGS = "Settings";
         const string QUIT = "Quit";
         const int MENU_ITEM_WIDTH = 50;
-        readonly string[] menuItems = { NEW_GAME, CONTINUE_GAME, DISPLAY_SETTINGS, QUIT };
+        public static string[] menuItems = { NEW_GAME, CONTINUE_GAME, DISPLAY_SETTINGS, QUIT };
         int currentMenuIndex = 0;
         int startRow = 0;
         int startColumn = 0;
-        int menuChange = 0;
+        public static int menuChange = 0;
 
         #endregion
         public Action<Type, Object[]> OnExitScreen { get; set; }

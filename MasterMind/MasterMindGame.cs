@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Utils;
-
 namespace MasterMind
 {
 
@@ -58,6 +57,11 @@ namespace MasterMind
             type = GAME_TYPE.PLAYER_VS_NPC;
             evaluations = new List<int[]>();
             guesses = new List<int[]>();
+            currentAttempts = 0;
+            attemptsLeft = 0;
+            numberOfAttempts = 0;
+            elementsInHiddenSequence = 4;
+            amountColorsInHiddenSequence = 0;
         }
 
         #region MasterMind game functions
@@ -139,7 +143,7 @@ namespace MasterMind
                 {
                     score = CORRECT_COLOR_CORRECT_SPOT;
                 }
-                else if (isPartOfSolution(sourceList, guess))
+                else if (IsPartOfSolution(sourceList, guess))
                 {
                     score = JUST_CORECT_COLOR;
                 }
@@ -150,7 +154,7 @@ namespace MasterMind
             return output;
         }
 
-        bool isPartOfSolution(int[] solution, int guess)
+        bool IsPartOfSolution(int[] solution, int guess)
         {
             bool found = false;
             for (int index = 0; index < solution.Length; index++)
@@ -165,7 +169,7 @@ namespace MasterMind
             return found;
         }
 
-        private int getAmountOfAttempts()
+        private int GetAmountOfAttempts()
         {
             Output.Write(Output.Align("\nHow many attempts do you want? Max 10", Alignment.CENTER), true);
             return CheckIntInput(Console.ReadLine().ToLower(), 1, 10);
@@ -183,7 +187,7 @@ namespace MasterMind
             return result;
         }
 
-        private bool getDuplicate()
+        private bool GetDuplicate()
         {
             Output.Write(Output.Align("\nDo you want duplicates? y/n", Alignment.CENTER), true);
             ANSICodes.Positioning.SetCursorPos(Console.WindowWidth / 2, Console.WindowHeight);
@@ -200,18 +204,58 @@ namespace MasterMind
             return false;
         }
 
-        private int getElementsInHiddenSequence()
+        private int GetElementsInHiddenSequence()
         {
             Output.Write(Output.Align("\nHow many elements in hidden sequence? Max 10", Alignment.CENTER), true);
             ANSICodes.Positioning.SetCursorPos(Console.WindowWidth / 2, Console.WindowHeight);
             return CheckIntInput(Console.ReadLine().ToLower(), 1, 10);
         }
 
-        private int getAmountColorsInHiddenSequence()
+        private int GetAmountColorsInHiddenSequence()
         {
             Output.Write(Output.Align("\nHow many different colors in the hidden sequence?, Max 4", Alignment.CENTER), true);
             ANSICodes.Positioning.SetCursorPos(Console.WindowWidth / 2, Console.WindowHeight);
             return CheckIntInput(Console.ReadLine().ToLower(), 1, 4);
+        }
+
+        private void CheckGameState()
+        {
+            if (attemptsLeft <= 0)
+            {
+                Console.Clear();
+                Output.Write(Output.Align("No more attempts unlucky", Alignment.CENTER), true);
+                Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
+                string input = Console.ReadLine().ToLower();
+                while (input != "y" && input != "n")
+                {
+                    Output.Write(Output.Align("Its a yes (y) or no (n) question..."));
+                    input = Console.ReadLine().ToLower();
+                }
+                Console.Clear();
+                if (input == "y")
+                {
+                    OnExitScreen(typeof(MasterMindGame), new object[] { GAME_TYPE.PLAYER_VS_NPC });
+                }
+                else if (input == "n")
+                {
+                    MenuScreen.menuItems[0] = "Start new Game";
+                    MenuScreen.menuItems[1] = "Settings";
+                    MenuScreen.menuItems[2] = "Quit";
+                    OnExitScreen(typeof(MenuScreen), null);
+                    return;
+                }
+            }
+            for (int i = 0; i < solution.Length; i++)
+            {
+                if (guess[i] != solution[i])
+                {
+                    break;
+                }
+                Output.Write("Y)OIYIASDHAS WIN!");
+                Environment.Exit(0);
+            }
+
+
         }
 
         #endregion
@@ -224,13 +268,13 @@ namespace MasterMind
             {
 
                 Console.Clear();
-                numberOfAttempts = getAmountOfAttempts();
+                numberOfAttempts = GetAmountOfAttempts();
                 Console.Clear();
-                duplicates = getDuplicate();
+                duplicates = GetDuplicate();
                 Console.Clear();
-                elementsInHiddenSequence = getElementsInHiddenSequence();
+                elementsInHiddenSequence = GetElementsInHiddenSequence();
                 Console.Clear();
-                amountColorsInHiddenSequence = getAmountColorsInHiddenSequence();
+                amountColorsInHiddenSequence = GetAmountColorsInHiddenSequence();
                 Console.Clear();
 
                 int[] colors = new[] { (int)COLORS.BLUE, (int)COLORS.CYAN, (int)COLORS.GREEN, (int)COLORS.MAGENTA };
@@ -257,61 +301,48 @@ namespace MasterMind
         public void update()
         {
             attemptsLeft = numberOfAttempts - currentAttempts;
-            for (int i = 0; i < solution.Length; i++)
+            CheckGameState();
+            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
             {
-                if (guess[i] != solution[i])
-                {
-                    break;
-                }
-                Output.Write("Y)OIYIASDHAS WIN!");  
-                Environment.Exit(0); 
+
             }
-
-            if (attemptsLeft == 0)
-                {
-                    Environment.Exit(0);
-                }
-                if (type == GAME_TYPE.PLAYER_VS_PLAYER)
-                {
-
-                }
-                else
-                {
-
-                    if (guess != null)
-                    {
-                        evaluation = Compare(solution, guess);
-                        guesses.Add(guess);
-                        evaluations.Add(evaluation);
-                        guess = null;
-                        evaluation = null;
-                        dirty = true;
-                    }
-                }
-            }
-
-            public void draw()
+            else
             {
-                if (dirty)
+
+                if (guess != null)
                 {
-                    Console.Clear();
-                    dirty = false;
-                    Output.Write(Output.Align($"Guesses left: {attemptsLeft}", Alignment.CENTER), true);
-                    int limit = evaluations.Count();
-                    for (int i = 0; i < limit; i++)
-                    {
-                        string gu = String.Join(' ', guesses[i]);
-                        string ev = String.Join(' ', evaluations[i]);
-                        Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
-                    }
+                    evaluation = Compare(solution, guess);
+                    guesses.Add(guess);
+                    evaluations.Add(evaluation);
+                    guess = null;
+                    evaluation = null;
+                    dirty = true;
                 }
-
-
             }
+        }
 
-            #endregion
-
+        public void draw()
+        {
+            if (dirty)
+            {
+                Console.Clear();
+                dirty = false;
+                Output.Write(Output.Align($"Guesses left: {attemptsLeft}", Alignment.CENTER), true);
+                int limit = evaluations.Count();
+                for (int i = 0; i < limit; i++)
+                {
+                    string gu = String.Join(' ', guesses[i]);
+                    string ev = String.Join(' ', evaluations[i]);
+                    Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
+                }
+            }
 
 
         }
+
+        #endregion
+
+
+
     }
+}
