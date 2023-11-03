@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Utils;
 
 namespace MasterMind
@@ -164,50 +165,9 @@ namespace MasterMind
             return found;
         }
 
-        #endregion
-
-        #region GameEngine.IScene
-        public void init()
-        {
-
-
-
-            if (type == GAME_TYPE.PLAYER_VS_NPC)
-            {
-
-                Console.Clear();
-                numberOfAttempts = getAmountOfAttempts();
-                Console.Clear();
-                duplicates = getDuplicate();
-                Console.Clear();
-                elementsInHiddenSequence = getElementsInHiddenSequence();
-                Console.Clear();
-                amountColorsInHiddenSequence = getAmountColorsInHiddenSequence();
-                Console.Clear();
-
-                int[] colors = new[] { (int)COLORS.BLUE, (int)COLORS.CYAN, (int)COLORS.GREEN, (int)COLORS.MAGENTA };
-                solution = CreateSequence(colors, elementsInHiddenSequence, duplicates);
-                Console.WriteLine(string.Join(",", solution));
-            }
-        }
-
-        public void input()
-        {
-            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
-            {
-                // If it is the "AI" player the input from the player must be akin to -1 for wrong 0 for correct color, and 1 for correct collor and space
-            }
-            else
-            {
-                guess = askAndRetriveGuessFromUser();
-                currentAttempts++;
-            }
-        }
-
         private int getAmountOfAttempts()
         {
             Output.Write(Output.Align("\nHow many attempts do you want? Max 10", Alignment.CENTER), true);
-            ANSICodes.Positioning.SetCursorPos(Console.WindowWidth / 2, Console.WindowHeight);
             return CheckIntInput(Console.ReadLine().ToLower(), 1, 10);
         }
 
@@ -217,6 +177,7 @@ namespace MasterMind
             while (int.TryParse(input, out result) == false || result > max || result < min)
             {
                 Output.Write(Output.Align("Input a valid number of attempts\n", Alignment.CENTER), true);
+                Console.SetCursorPosition(Console.WindowWidth / 2, 0);
                 input = Console.ReadLine();
             }
             return result;
@@ -253,53 +214,104 @@ namespace MasterMind
             return CheckIntInput(Console.ReadLine().ToLower(), 1, 4);
         }
 
-        public void update()
+        #endregion
+
+        #region GameEngine.IScene
+        public void init()
         {
-            attemptsLeft = numberOfAttempts - currentAttempts;
-            if(attemptsLeft == 0) {
-                Environment.Exit(0);
-            }
-            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
+
+            if (type == GAME_TYPE.PLAYER_VS_NPC)
             {
 
+                Console.Clear();
+                numberOfAttempts = getAmountOfAttempts();
+                Console.Clear();
+                duplicates = getDuplicate();
+                Console.Clear();
+                elementsInHiddenSequence = getElementsInHiddenSequence();
+                Console.Clear();
+                amountColorsInHiddenSequence = getAmountColorsInHiddenSequence();
+                Console.Clear();
+
+                int[] colors = new[] { (int)COLORS.BLUE, (int)COLORS.CYAN, (int)COLORS.GREEN, (int)COLORS.MAGENTA };
+                solution = CreateSequence(colors, elementsInHiddenSequence, duplicates);
+                Console.WriteLine(string.Join(",", solution));
+            }
+        }
+
+        public void input()
+        {
+            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
+            {
+                // If it is the "AI" player the input from the player must be akin to -1 for wrong 0 for correct color, and 1 for correct collor and space
             }
             else
             {
-
-                if (guess != null)
-                {
-                    evaluation = Compare(solution, guess);
-                    guesses.Add(guess);
-                    evaluations.Add(evaluation);
-                    guess = null;
-                    evaluation = null;
-                    dirty = true;
-                }
+                guess = askAndRetriveGuessFromUser();
+                currentAttempts++;
             }
         }
 
-        public void draw()
+
+
+        public void update()
         {
-            if (dirty)
+            attemptsLeft = numberOfAttempts - currentAttempts;
+            for (int i = 0; i < solution.Length; i++)
             {
-                Console.Clear();
-                dirty = false;
-                Output.Write(Output.Align($"Guesses left: {attemptsLeft}", Alignment.CENTER), true);
-                int limit = evaluations.Count();
-                for (int i = 0; i < limit; i++)
+                if (guess[i] != solution[i])
                 {
-                    string gu = String.Join(' ', guesses[i]);
-                    string ev = String.Join(' ', evaluations[i]);
-                    Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
+                    break;
+                }
+                Output.Write("Y)OIYIASDHAS WIN!");  
+                Environment.Exit(0); 
+            }
+
+            if (attemptsLeft == 0)
+                {
+                    Environment.Exit(0);
+                }
+                if (type == GAME_TYPE.PLAYER_VS_PLAYER)
+                {
+
+                }
+                else
+                {
+
+                    if (guess != null)
+                    {
+                        evaluation = Compare(solution, guess);
+                        guesses.Add(guess);
+                        evaluations.Add(evaluation);
+                        guess = null;
+                        evaluation = null;
+                        dirty = true;
+                    }
                 }
             }
 
+            public void draw()
+            {
+                if (dirty)
+                {
+                    Console.Clear();
+                    dirty = false;
+                    Output.Write(Output.Align($"Guesses left: {attemptsLeft}", Alignment.CENTER), true);
+                    int limit = evaluations.Count();
+                    for (int i = 0; i < limit; i++)
+                    {
+                        string gu = String.Join(' ', guesses[i]);
+                        string ev = String.Join(' ', evaluations[i]);
+                        Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
+                    }
+                }
+
+
+            }
+
+            #endregion
+
+
 
         }
-
-        #endregion
-
-
-
     }
-}
