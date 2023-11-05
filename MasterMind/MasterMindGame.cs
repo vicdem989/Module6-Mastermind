@@ -66,15 +66,15 @@ namespace MasterMind
 
         #region MasterMind game functions
 
-        private int[] CreateSequence(int[] source, int length = 4, bool duplicates = true)
+        private int[] CreateSequence(int[] colors, int length = 4, bool duplicates = true)
         {
             List<int> sequence = new();
             Random rnd = new((int)DateTime.Now.Ticks);
 
             while (sequence.Count < length)
             {
-                int index = rnd.Next(0, source.Length);
-                int peg = source[index];
+                int index = rnd.Next(0, colors.Length);
+                int peg = colors[index];
 
                 if (duplicates == false)
                 {
@@ -220,42 +220,68 @@ namespace MasterMind
 
         private void CheckGameState()
         {
-            if (attemptsLeft <= 0)
-            {
-                Console.Clear();
-                Output.Write(Output.Align("No more attempts unlucky", Alignment.CENTER), true);
-                Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
-                string input = Console.ReadLine().ToLower();
-                while (input != "y" && input != "n")
-                {
-                    Output.Write(Output.Align("Its a yes (y) or no (n) question..."));
-                    input = Console.ReadLine().ToLower();
-                }
-                Console.Clear();
-                if (input == "y")
-                {
-                    OnExitScreen(typeof(MasterMindGame), new object[] { GAME_TYPE.PLAYER_VS_NPC });
-                }
-                else if (input == "n")
-                {
-                    MenuScreen.menuItems[0] = "Start new Game";
-                    MenuScreen.menuItems[1] = "Settings";
-                    MenuScreen.menuItems[2] = "Quit";
-                    OnExitScreen(typeof(MenuScreen), null);
-                    return;
-                }
-            }
             for (int i = 0; i < solution.Length; i++)
             {
                 if (guess[i] != solution[i])
                 {
                     break;
                 }
-                Output.Write("Y)OIYIASDHAS WIN!");
-                Environment.Exit(0);
+                YouWon();
             }
+            if (attemptsLeft <= 0)
+            {
+                NoMoreAttempts();
+            }
+        }
 
+        private void YouWon()
+        {
+            Console.Clear();
+            Output.Write(Output.Align("Y)OIYIASDHAS WIN!", Alignment.CENTER), true);
+            Output.Write(Output.Align("Playa again? y/n", Alignment.CENTER), true);
+            string input = Console.ReadLine().ToLower();
+            while (input != "y" && input != "n")
+            {
+                Output.Write(Output.Align("Its a yes (y) or no (n) question..."));
+                input = Console.ReadLine().ToLower();
+            }
+            Console.Clear();
+            if (input == "y")
+            {
+                OnExitScreen(typeof(MasterMindGame), new object[] { GAME_TYPE.PLAYER_VS_NPC });
+            }
+            else if (input == "n")
+            {
+                Output.Write(Output.Align("Thanky you for playing", Alignment.CENTER), true);
+                Environment.Exit(0);
+                return;
+            }
+        }
 
+        private void NoMoreAttempts()
+        {
+            Console.Clear();
+            Output.Write(Output.Align("No more attempts unlucky", Alignment.CENTER), true);
+            Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
+            string input = Console.ReadLine().ToLower();
+            while (input != "y" && input != "n")
+            {
+                Output.Write(Output.Align("Its a yes (y) or no (n) question..."));
+                input = Console.ReadLine().ToLower();
+            }
+            Console.Clear();
+            if (input == "y")
+            {
+                OnExitScreen(typeof(MasterMindGame), new object[] { GAME_TYPE.PLAYER_VS_NPC });
+            }
+            else if (input == "n")
+            {
+                MenuScreen.menuItems[0] = "Start new Game";
+                MenuScreen.menuItems[1] = "Settings";
+                MenuScreen.menuItems[2] = "Quit";
+                OnExitScreen(typeof(MenuScreen), null);
+                return;
+            }
         }
 
         #endregion
@@ -263,7 +289,6 @@ namespace MasterMind
         #region GameEngine.IScene
         public void init()
         {
-
             if (type == GAME_TYPE.PLAYER_VS_NPC)
             {
 
@@ -323,6 +348,7 @@ namespace MasterMind
 
         public void draw()
         {
+
             if (dirty)
             {
                 Console.Clear();
