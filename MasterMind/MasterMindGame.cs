@@ -220,25 +220,30 @@ namespace MasterMind
 
         private void CheckGameState()
         {
+            if (attemptsLeft < 0)
+            {
+                NoMoreAttempts();
+            }
+
             for (int i = 0; i < solution.Length; i++)
             {
                 if (guess[i] != solution[i])
                 {
-                    break;
+                    return;
                 }
-                YouWon();
+
             }
-            if (attemptsLeft <= 0)
-            {
-                NoMoreAttempts();
-            }
+            YouWon();
+
         }
 
         private void YouWon()
         {
             Console.Clear();
-            Output.Write(Output.Align("Y)OIYIASDHAS WIN!", Alignment.CENTER), true);
-            Output.Write(Output.Align("Playa again? y/n", Alignment.CENTER), true);
+            Output.Write(Output.Align("WEOW YOU WON!", Alignment.CENTER), true);
+            Output.Write(Output.Align($"It took you {currentAttempts} guesses to guess it!", Alignment.CENTER), true);
+            Output.Write(Output.Align($"You had {attemptsLeft} attempts left!", Alignment.CENTER), true);
+            Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
             string input = Console.ReadLine().ToLower();
             while (input != "y" && input != "n")
             {
@@ -361,6 +366,13 @@ namespace MasterMind
                     string ev = String.Join(' ', evaluations[i]);
                     Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
                 }
+                
+                Output.Write("\n\n");
+                Output.Write(Output.Align("Legend:", Alignment.CENTER), true);
+                Output.Write(Output.Align("-1 means wrong number and position", Alignment.CENTER), true);
+                Output.Write(Output.Align("1 means correct nunber and position", Alignment.CENTER), true);
+                Output.Write(Output.Align("0 means is correct number but wrong position", Alignment.CENTER), true);
+
             }
 
 

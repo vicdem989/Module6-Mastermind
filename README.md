@@ -48,9 +48,9 @@ You must use the code from [https://github.com/CodeCraftCurriculum-I/module_6_ma
 # DONE - Currently, the player can input a sequence shorter or longer than needed. Only permit inputs that are the correct length.
 - The current output is not pretty and uses numbers instead of colours. Change the code, so the board looks like the following image (as close as possible). The evaluation is on the left, and the guesses are on the right. Note that we are showing the whole board, including the attempts that have not been used yet (all white colours). The code already contains code that shows how to use colours.
     ![description of what the game should look like.](./brett_1.png)
-- Add a Legend after the game board. A legend explains characters, symbols, or markings that may be unfamiliar to the reader.
+## DONE - Add a Legend after the game board. A legend explains characters, symbols, or markings that may be unfamiliar to the reader.
 - Find some way to have the player select colours, not just type numbers (at the moment, the players do not know what the numbers symbolize in colors).
-- Add a summary after the game, including information about whether the player won or lost, how well they did, etc. Then return to the menu.
+## DONE - Add a summary after the game, including information about whether the player won or lost, how well they did, etc. Then return to the menu.
 
 ### Challenge Requirements (Higher Grades)
 
