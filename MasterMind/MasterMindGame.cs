@@ -4,6 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using Utils;
 namespace MasterMind
 {
@@ -97,7 +98,7 @@ namespace MasterMind
         {
             if (guess == null)
             {
-                Console.WriteLine(Output.Align("Guess a sequence ", Alignment.CENTER));
+                Output.Write(Output.Align("Guess a sequence ", Alignment.CENTER));
                 string response = Console.ReadLine();
 
                 while (!ValidateInput(response))
@@ -309,7 +310,7 @@ namespace MasterMind
 
                 int[] colors = new[] { (int)COLORS.BLUE, (int)COLORS.CYAN, (int)COLORS.GREEN, (int)COLORS.MAGENTA };
                 solution = CreateSequence(colors, elementsInHiddenSequence, duplicates);
-                Console.WriteLine(string.Join(",", solution));
+                Console.WriteLine(string.Join(",", solution)); //3 5 2 4
             }
         }
 
@@ -371,7 +372,7 @@ namespace MasterMind
                 Output.Write(Output.Align("Legend:", Alignment.CENTER), true);
                 Output.Write(Output.Align("-1 means wrong number and position", Alignment.CENTER), true);
                 Output.Write(Output.Align("1 means correct nunber and position", Alignment.CENTER), true);
-                Output.Write(Output.Align("0 means is correct number but wrong position", Alignment.CENTER), true);
+                Output.Write(Output.Align("0 means is correct number but wrong position\n", Alignment.CENTER), true);
 
             }
 
