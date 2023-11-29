@@ -1,5 +1,35 @@
 namespace Utils
 {
+    public static class HelperFunctions
+    {
+        public static char[][] Create2DArrayFromMultiLineString(string input)
+        {
+            string[] lines = input.Split('\n');
+            char[][] output = new char[lines.Length][];
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                output[i] = lines[i].ToCharArray();
+            }
+
+            return output;
+        }
+
+        public static int WrappAround(int source, int min, int max)
+        {
+            int output = source;
+
+            if (source < min)
+            {
+                output = max;
+            }
+            else if (source > max)
+            {
+                output = min;
+            }
+            return output;
+        }
+    }
     public static class ANSICodes
     {
         public const string Reset = "\u001b[0m";

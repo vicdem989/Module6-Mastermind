@@ -51,6 +51,8 @@ namespace MasterMind
         private int currentAttempts = 0;
         private int attemptsLeft = 0;
 
+        private bool debug = true;
+
         bool dirty = false;
 
         public MasterMindGame(GAME_TYPE gameType)
@@ -221,7 +223,7 @@ namespace MasterMind
 
         private void CheckGameState()
         {
-            if (attemptsLeft < 0)
+            if (attemptsLeft <= 0)
             {
                 NoMoreAttempts();
             }
@@ -241,10 +243,10 @@ namespace MasterMind
         private void YouWon()
         {
             Console.Clear();
-            Output.Write(Output.Align("WEOW YOU WON!", Alignment.CENTER), true);
-            Output.Write(Output.Align($"It took you {currentAttempts} guesses to guess it!", Alignment.CENTER), true);
-            Output.Write(Output.Align($"You had {attemptsLeft} attempts left!", Alignment.CENTER), true);
-            Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.Green}WEOW YOU WON!{ANSICodes.Reset}", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.White}It took you {currentAttempts} guesses to guess it!{ANSICodes.Reset}", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.White}You had {attemptsLeft} attempts left!{ANSICodes.Reset}", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.White}Play again? y/n{ANSICodes.Reset}", Alignment.CENTER), true);
             string input = Console.ReadLine().ToLower();
             while (input != "y" && input != "n")
             {
@@ -267,8 +269,8 @@ namespace MasterMind
         private void NoMoreAttempts()
         {
             Console.Clear();
-            Output.Write(Output.Align("No more attempts unlucky", Alignment.CENTER), true);
-            Output.Write(Output.Align("Play again? y/n", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.Red}No more attempts unlucky{ANSICodes.Reset}", Alignment.CENTER), true);
+            Output.Write(Output.Align($"{ANSICodes.Colors.White}Play again? y/n{ANSICodes.Reset}", Alignment.CENTER), true);
             string input = Console.ReadLine().ToLower();
             while (input != "y" && input != "n")
             {
@@ -310,21 +312,15 @@ namespace MasterMind
 
                 int[] colors = new[] { (int)COLORS.BLUE, (int)COLORS.CYAN, (int)COLORS.GREEN, (int)COLORS.MAGENTA };
                 solution = CreateSequence(colors, elementsInHiddenSequence, duplicates);
-                Console.WriteLine(string.Join(",", solution)); //3 5 2 4
+                if(debug)
+                    Output.Write(string.Join(",", solution)); //3 5 2 4
             }
         }
 
         public void input()
         {
-            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
-            {
-                // If it is the "AI" player the input from the player must be akin to -1 for wrong 0 for correct color, and 1 for correct collor and space
-            }
-            else
-            {
-                guess = askAndRetriveGuessFromUser();
-                currentAttempts++;
-            }
+            guess = askAndRetriveGuessFromUser();
+            currentAttempts++;
         }
 
 
@@ -333,23 +329,17 @@ namespace MasterMind
         {
             attemptsLeft = numberOfAttempts - currentAttempts;
             CheckGameState();
-            if (type == GAME_TYPE.PLAYER_VS_PLAYER)
-            {
 
-            }
-            else
+            if (guess != null)
             {
-
-                if (guess != null)
-                {
-                    evaluation = Compare(solution, guess);
-                    guesses.Add(guess);
-                    evaluations.Add(evaluation);
-                    guess = null;
-                    evaluation = null;
-                    dirty = true;
-                }
+                evaluation = Compare(solution, guess);
+                guesses.Add(guess);
+                evaluations.Add(evaluation);
+                guess = null;
+                evaluation = null;
+                dirty = true;
             }
+
         }
 
         public void draw()
@@ -367,7 +357,7 @@ namespace MasterMind
                     string ev = String.Join(' ', evaluations[i]);
                     Console.WriteLine(Output.Align($"{gu}  |  {ev}", Alignment.CENTER));
                 }
-                
+
                 Output.Write("\n\n");
                 Output.Write(Output.Align("Legend:", Alignment.CENTER), true);
                 Output.Write(Output.Align("-1 means wrong number and position", Alignment.CENTER), true);

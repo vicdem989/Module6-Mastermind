@@ -7,11 +7,9 @@ namespace MasterMind
     {
         #region Constants And Variables 
         const String NEW_GAME = "Start new Game";
-        const String CONTINUE_GAME = "Continue Game";
-        const string DISPLAY_SETTINGS = "Settings";
         const string QUIT = "Quit";
         const int MENU_ITEM_WIDTH = 50;
-        public static string[] menuItems = { NEW_GAME, CONTINUE_GAME, DISPLAY_SETTINGS, QUIT };
+        public static string[] menuItems = { NEW_GAME, QUIT };
         int currentMenuIndex = 0;
         int startRow = 0;
         int startColumn = 0;
@@ -21,7 +19,7 @@ namespace MasterMind
         public Action<Type, Object[]> OnExitScreen { get; set; }
         public void init()
         {
-            startRow = Console.WindowHeight / 2; ///TODO: fix, should not be static. 
+            startRow = Console.WindowHeight / 2; 
             startColumn = 0;
         }
         public void input()

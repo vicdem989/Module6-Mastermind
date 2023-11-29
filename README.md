@@ -1,39 +1,9 @@
-# "Mastermind"
+For mastermind, I was way more focued on the structure of the code. Which I feel I managed and it payed of. It was way easier to navigate the code, even if I hadn't touched it in some time.
 
-This code-breaking game is a fascinating step forward on your programming journey, offering an opportunity to further consolidate your understanding of our foundational concepts and to encounter some fresh, intriguing challenges.
+I felt most of this task was quite simple and relatively easy to do. However, for some reason, I could never get the colors to work. I came close once when I figured out that the ANSI codes I wanted to use ranged from 0-9. With the input being 0-9, I figured I could use that to determine the color output. Until I realized it would not solve the issue. The issue being that in the evalutaion, 1 == green e.g.. 
 
-## Variables
+Another thing I struggled with was the output window in general. Having it display the amount of tries until the amount was reached, while also being the same output was something I did not manage to do. I seems like such a simple task, but I could never figure it out. My thought process was to have one array that shows the attemps, and then replacing array[0] by the attempt. Then increase it until the whole array is filled with attemps.
 
-Variables in "Mastermind" hold critical information, such as the secret code, the player's guess, the number of attempts made, and the feedback provided after each guess. By now, you should be comfortable creating and manipulating variables to drive the game mechanics.
-
-## Conditionals
-
-Conditionals are essential to the game's flow, used to check the player's guess against the secret code, determine if the game has been won, or if the maximum number of attempts has been reached. This application should feel familiar from your previous projects.
-
-## Arrays
-
-Arrays can store the secret code and the player's guesses. This might be a new use of arrays for some of you, introducing an additional layer of complexity and requiring more sophisticated array manipulation.
-
-## Loops
-
-Loops enable the game to continue until the player cracks the code or exhausts their attempts. The application of loops here is similar to previous projects, reinforcing your understanding of how they control program flow.
-
-## Functions
-
-Functions streamline the game by encapsulating tasks like generating the secret code, accepting player guesses, providing feedback, and checking win conditions. This project encourages you to create even more versatile and reusable functions.
-
-"Mastermind" builds upon what you've learned from the previous projects, particularly the importance of separating game state from visual representation. Just like in "Tic Tac Toe", your game logic should be distinct from your interface, whether it's a console or a graphical UI. This practice will make your code more maintainable, reusable, and versatile.
-
-Now, what's new in "Mastermind"? You'll deal with more complex logic in this game, especially when providing feedback on a player's guess. This isn't just about whether the guess is correct or not—it's about indicating which elements of the guess are correct, which are in the wrong position, and which aren't in the code at all.
-
-Mastermind is an engaging step up in complexity from your previous projects. It's an excellent opportunity to apply your knowledge, learn new techniques, and solve problems in a context that's different from the games you've worked on so far. Prepare to crack the code of "Mastermind"!
-
-## TIPs
-
-- Using and creating functions is a good idea for this assignment.
-- You do not need to do everything to have the assignment approved
-
-## Project Requirements
 
 You must use the code from [https://github.com/CodeCraftCurriculum-I/module_6_mastermind](https://github.com/CodeCraftCurriculum-I/module_6_mastermind)
 
